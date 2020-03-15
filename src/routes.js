@@ -4,6 +4,7 @@ import history from './utils/history';
 
 import Home from './components/home';
 import Details from './components/details';
+import Currencies from './components/currencies';
 import Navigation from './components/navigation';
 
 const Routes = () => {
@@ -14,7 +15,13 @@ const Routes = () => {
                 <div>
                     <Switch>
                         <Route exact path="/" component={Home} />
-                        <Route path="/latest" component={Details} />
+                        <Route exact path="/latest" component={Details} />
+                        <Route
+                            path="/latest/:name"
+                            render={({ match }) => (
+                                <Currencies name={match.params.name} />
+                            )}
+                        />
                     </Switch>
                 </div>
             </Router>

@@ -11,9 +11,7 @@ const Navigation = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/latest" style={{ padding: '5px' }}>
-                        Latest
-                    </Link>
+                    <Link to="/latest">Latest</Link>
                 </li>
             </ul>
         </nav>

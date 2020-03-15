@@ -14,6 +14,7 @@ const AppState = props => {
 
     useEffect(() => {
         getCryptoDataLocally().then(data => {
+            // getCryptoData().then(data => {
             dispatch(Actions.fetchedData(data));
             dispatch(Actions.appLoaded());
         });

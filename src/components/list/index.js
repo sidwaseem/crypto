@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useTable, usePagination } from 'react-table';
 import { useStore } from '../../context/provider';
-import DefaultIcon from '../../img/generic.svg';
+import getCellData from './cellItem';
 
 // Let's add a fetchData method to our Table component that will be used to fetch
 // new data when pagination state changes
@@ -87,29 +86,7 @@ function Table({
                                         <td
                                             {...cell.getCellProps()}
                                             className="table-root table-body">
-                                            {cell.column.id === 'symbol' ? (
-                                                <img
-                                                    src={`https://cryptoicons.org/api/icon/${cell.value.toLowerCase()}/30`}
-                                                    onError={e => {
-                                                        e.target.src = DefaultIcon;
-                                                    }}
-                                                    alt={cell.value}
-                                                />
-                                            ) : cell.column.id ===
-                                              'quote.USD.percent_change_24h' ? (
-                                                <span
-                                                    className={
-                                                        cell.value
-                                                            .toString()
-                                                            .indexOf('-')
-                                                            ? 'inc'
-                                                            : 'dec'
-                                                    }>
-                                                    {cell.value}
-                                                </span>
-                                            ) : (
-                                                cell.render('Cell')
-                                            )}
+                                            {getCellData(cell)}
                                         </td>
                                     );
                                 })}
@@ -129,57 +106,82 @@ function Table({
                     </tr>
                 </tbody>
             </table>
-
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                </button>{' '}
-                <button
-                    onClick={() => previousPage()}
-                    disabled={!canPreviousPage}>
-                    {'<'}
-                </button>{' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>{' '}
-                <button
-                    onClick={() => gotoPage(pageCount - 1)}
-                    disabled={!canNextPage}>
-                    {'>>'}
-                </button>{' '}
-                <span>
-                    Page{' '}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>{' '}
-                </span>
-                <span>
-                    | Go to page:{' '}
-                    <input
-                        type="number"
-                        defaultValue={pageIndex + 1}
-                        onChange={e => {
-                            const page = e.target.value
-                                ? Number(e.target.value) - 1
-                                : 0;
-                            gotoPage(page);
-                        }}
-                        style={{ width: '100px' }}
-                    />
-                </span>{' '}
-                <select
-                    value={pageSize}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value));
-                    }}>
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {getPagination(
+                canPreviousPage,
+                canNextPage,
+                pageOptions,
+                pageCount,
+                gotoPage,
+                nextPage,
+                previousPage,
+                setPageSize,
+                pageIndex,
+                pageSize
+            )}
         </Fragment>
+    );
+}
+
+function getPagination(
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    pageIndex,
+    pageSize
+) {
+    return (
+        <div className="pagination">
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {'<<'}
+            </button>{' '}
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                {'<'}
+            </button>{' '}
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+                {'>'}
+            </button>{' '}
+            <button
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}>
+                {'>>'}
+            </button>{' '}
+            <span>
+                Page{' '}
+                <strong>
+                    {pageIndex + 1} of {pageOptions.length}
+                </strong>{' '}
+            </span>
+            <span>
+                | Go to page:{' '}
+                <input
+                    type="number"
+                    defaultValue={pageIndex + 1}
+                    onChange={e => {
+                        const page = e.target.value
+                            ? Number(e.target.value) - 1
+                            : 0;
+                        gotoPage(page);
+                    }}
+                    style={{ width: '100px' }}
+                />
+            </span>{' '}
+            <select
+                value={pageSize}
+                onChange={e => {
+                    setPageSize(Number(e.target.value));
+                }}>
+                {[5, 10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                        Show {pageSize}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
 }
 
@@ -244,20 +246,20 @@ const Item = props => {
             setLoading(true);
 
             // We'll even set a delay to simulate a server here
-            setTimeout(() => {
-                // Only update the data if this is the latest fetch
-                if (fetchId === fetchIdRef.current) {
-                    const startRow = pageSize * pageIndex;
-                    const endRow = startRow + pageSize;
-                    setData(cryptoData.data.slice(startRow, endRow));
+            // setTimeout(() => {}, 0);
 
-                    // Your server could send back total page count.
-                    // For now we'll just fake it, too
-                    setPageCount(Math.ceil(cryptoData.data.length / pageSize));
+            // Only update the data if this is the latest fetch
+            if (fetchId === fetchIdRef.current) {
+                const startRow = pageSize * pageIndex;
+                const endRow = startRow + pageSize;
+                setData(cryptoData.data.slice(startRow, endRow));
 
-                    setLoading(false);
-                }
-            }, 1000);
+                // Your server could send back total page count.
+                // For now we'll just fake it, too
+                setPageCount(Math.ceil(cryptoData.data.length / pageSize));
+
+                setLoading(false);
+            }
         },
         [cryptoData.data]
     );

@@ -21,6 +21,7 @@
     "test:debug": "node --inspect-brk ./node_modules/react-scripts/scripts/test.js --runInBand",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://sandbox-api.coinmarketcap.com/",
   "eslintConfig": {
     "extends": "react-app"
   },
