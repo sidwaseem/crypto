@@ -18,9 +18,7 @@ const Routes = () => {
                         <Route exact path="/latest" component={Details} />
                         <Route
                             path="/latest/:name"
-                            render={({ match }) => (
-                                <Currencies name={match.params.name} />
-                            )}
+                            render={props => <Currencies {...props} />}
                         />
                     </Switch>
                 </div>

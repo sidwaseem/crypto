@@ -2,7 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import DefaultIcon from '../../img/generic.svg';
 
-function getCellData(cell) {
+/**
+ * Render cells
+ * @function getCellData
+ * @param {*} cell
+ * @param {*} currency
+ */
+function getCellData(cell, currency) {
     switch (cell.column.id) {
         case 'symbol': {
             return (
@@ -16,7 +22,19 @@ function getCellData(cell) {
             );
         }
         case 'name': {
-            return <Link to={`/latest/${cell.value}`}>{cell.value}</Link>;
+            return (
+                <Link
+                    to={{
+                        pathname: `/latest/${currency.slug}`,
+                        state: {
+                            slug: currency.slug,
+                            id: currency.id,
+                            name: cell.value,
+                        },
+                    }}>
+                    {cell.value}
+                </Link>
+            );
         }
         case 'quote.USD.percent_change_24h': {
             return (

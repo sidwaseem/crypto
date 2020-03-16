@@ -86,7 +86,10 @@ function Table({
                                         <td
                                             {...cell.getCellProps()}
                                             className="table-root table-body">
-                                            {getCellData(cell)}
+                                            {getCellData(
+                                                cell,
+                                                cell.row.original
+                                            )}
                                         </td>
                                     );
                                 })}

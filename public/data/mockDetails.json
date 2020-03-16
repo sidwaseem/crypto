@@ -8,6 +8,133 @@
         "notice": null
     },
     "data": {
+        "1": {
+            "urls": {
+                "website": [
+                    "https://bitcoin.org/"
+                ],
+                "technical_doc": [
+                    "https://bitcoin.org/bitcoin.pdf"
+                ],
+                "twitter": [],
+                "reddit": [
+                    "https://reddit.com/r/bitcoin"
+                ],
+                "message_board": [
+                    "https://bitcointalk.org"
+                ],
+                "announcement": [],
+                "chat": [],
+                "explorer": [
+                    "https://blockchain.coinmarketcap.com/chain/bitcoin",
+                    "https://blockchain.info/",
+                    "https://live.blockcypher.com/btc/",
+                    "https://blockchair.com/bitcoin",
+                    "https://explorer.viabtc.com/btc"
+                ],
+                "source_code": [
+                    "https://github.com/bitcoin/"
+                ]
+            },
+            "logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+            "id": 1,
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "slug": "bitcoin",
+            "description": "Bitcoin (BTC) is a consensus network that enables a new payment system and a completely digital currency. Powered by its users, it is a peer to peer payment network that requires no central authority to operate. On October 31st, 2008, an individual or group of individuals operating under the pseudonym \"Satoshi Nakamoto\" published the Bitcoin Whitepaper and described it as: \"a purely peer-to-peer version of electronic cash, which would allow online payments to be sent directly from one party to another without going through a financial institution.\"",
+            "notice": null,
+            "date_added": "2013-04-28T00:00:00.000Z",
+            "tags": [
+                "mineable"
+            ],
+            "platform": null,
+            "category": "coin"
+        },
+        "2": {
+            "urls": {
+                "website": [
+                    "https://litecoin.org/"
+                ],
+                "technical_doc": [],
+                "twitter": [
+                    "https://twitter.com/LitecoinProject"
+                ],
+                "reddit": [
+                    "https://reddit.com/r/litecoin"
+                ],
+                "message_board": [
+                    "https://litecointalk.io/",
+                    "https://litecoin-foundation.org/"
+                ],
+                "announcement": [
+                    "https://bitcointalk.org/index.php?topic=47417.0"
+                ],
+                "chat": [
+                    "https://telegram.me/litecoin"
+                ],
+                "explorer": [
+                    "https://blockchair.com/litecoin",
+                    "https://chainz.cryptoid.info/ltc/",
+                    "http://explorer.litecoin.net/chain/Litecoin",
+                    "https://ltc.tokenview.com/en",
+                    "https://explorer.viabtc.com/ltc"
+                ],
+                "source_code": [
+                    "https://github.com/litecoin-project/litecoin"
+                ]
+            },
+            "logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/2.png",
+            "id": 2,
+            "name": "Litecoin",
+            "symbol": "LTC",
+            "slug": "litecoin",
+            "description": "Litecoin is a peer-to-peer cryptocurrency created by Charlie Lee. It was created based on the Bitcoin protocol but differs in terms of the hashing algorithm used. Litecoin uses the memory intensive Scrypt proof of work mining algorithm. Scrypt allows consumer-grade hardware such as GPU to mine those coins.",
+            "notice": null,
+            "date_added": "2013-04-28T00:00:00.000Z",
+            "tags": [
+                "mineable"
+            ],
+            "platform": null,
+            "category": "coin"
+        },
+        "10": {
+            "urls": {
+                "website": [
+                    "http://freico.in"
+                ],
+                "technical_doc": [
+                    "http://freico.in/docs/freimarkets.pdf"
+                ],
+                "twitter": [
+                    "https://twitter.com/Freicoin"
+                ],
+                "reddit": [],
+                "message_board": [
+                    "https://freicoinalliance.com/"
+                ],
+                "announcement": [],
+                "chat": [],
+                "explorer": [
+                    "http://freicoin.info/chain/Freicoin"
+                ],
+                "source_code": [
+                    "https://github.com/freicoin/freicoin"
+                ]
+            },
+            "logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/10.png",
+            "id": 10,
+            "name": "Freicoin",
+            "symbol": "FRC",
+            "slug": "freicoin",
+            "description": "Freicoin (FRC) is a cryptocurrency. Users are able to generate FRC through the process of mining. Freicoin has a current supply of 100,000,000 with 55,933,296.089 in circulation. The last known price of Freicoin is $0.001750 USD and is down -9.18% over the last 24 hours. It is currently trading on 1 active market(s) with $44.75 traded over the last 24 hours. More information can be found at http://freico.in.",
+            "notice": null,
+            "date_added": "2013-05-03T00:00:00.000Z",
+            "tags": [
+                "mineable"
+            ],
+            "platform": null,
+            "category": "coin"
+        },
         "1027": {
             "urls": {
                 "website": ["https://www.ethereum.org/"],

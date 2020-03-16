@@ -1,6 +1,6 @@
-import rawData from '../data/mockData.json';
 import { actionTypes } from './actions';
 import CONST from '../const';
+import postCall from '../utils/post';
 
 export const initialState = {
     appLoaded: false,
@@ -11,25 +11,44 @@ export const initialState = {
  * Fetch latest crypto stats data
  */
 export const getCryptoData = () => {
-    return fetch(CONST.url, {
-        mode: 'cors',
-        headers: {
-            'X-CMC_PRO_API_KEY': 'e027cb66-32ce-40cd-8361-846402d8c3e5',
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content'),
-        },
-    })
-        .then(r => r.json())
-        .then(({ data }) => data);
+    return (
+        postCall({
+            url: CONST.url,
+            method: 'POST',
+            headers: {
+                'X-CMC_PRO_API_KEY': process.env.REACT_APP_API_KEY || '',
+            },
+        })
+            // .then(r => r.json())
+            .then(res => {
+                console.log(res);
+                return res.data.data;
+            })
+            .catch(err => console.log(err))
+    );
 };
+// export const getCryptoData = () => {
+//     return fetch(CONST.url, {
+//         mode: 'cors',
+//         headers: {
+//             'X-CMC_PRO_API_KEY': 'e027cb66-32ce-40cd-8361-846402d8c3e5',
+//             'X-CSRF-TOKEN': document
+//                 .querySelector('meta[name="csrf-token"]')
+//                 .getAttribute('content'),
+//         },
+//     })
+//         .then(r => r.json())
+//         .then(({ data }) => data);
+// };
 
 /**
  * Helper method to Mimic crypto stats updates locally to avoid unnecassary calls to API
  * @function getCryptoDataLocally
  */
 export const getCryptoDataLocally = () => {
-    return new Promise(resolve => resolve(rawData));
+    return postCall({
+        url: CONST.local,
+    });
 };
 
 /**
