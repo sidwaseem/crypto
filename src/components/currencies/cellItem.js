@@ -5,8 +5,8 @@ import DefaultIcon from '../../img/generic.svg';
 /**
  * Render cells
  * @function getCellData
- * @param {*} cell
- * @param {*} currency
+ * @param {Object} cell
+ * @param {Object} currency
  */
 function getCellData(cell, currency) {
     switch (cell.column.id) {
@@ -41,7 +41,9 @@ function getCellData(cell, currency) {
                 <span
                     className={
                         cell.value.toString().indexOf('-') ? 'inc' : 'dec'
-                    }></span>
+                    }>
+                    {cell.value}
+                </span>
             );
         }
         default: {

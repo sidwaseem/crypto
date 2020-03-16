@@ -5,24 +5,29 @@ import * as Actions from './actions';
 import {
     initialState,
     reducer,
-    // getCryptoData,
-    getCryptoDataLocally, // uncomment line to use local data
+    // getCryptoData, // disabled due to api issue
+    getCryptoDataLocally,
 } from './reducer';
 
+/**
+ * Store provider
+ * @function AppState
+ * @param {*} props
+ */
 const AppState = props => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        getCryptoDataLocally().then(data => {
+        getCryptoDataLocally().then(res => {
             // getCryptoData().then(data => {
-            dispatch(Actions.fetchedData(data));
+            dispatch(Actions.fetchedData(res.data));
             dispatch(Actions.appLoaded());
         });
     }, []);
 
     return (
         <StoreContext.Provider value={[state, dispatch]}>
-            {state.appLoaded ? props.children : <div>Fetching crypto data</div>}
+            {state.appLoaded ? props.children : <div>Loading app</div>}
         </StoreContext.Provider>
     );
 };

@@ -1,17 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
+/**
+ * Navigation component
+ * @function Navigation
+ */
 const Navigation = () => {
     return (
         <nav className="navigation">
             <ul>
                 <li>
-                    <Link to="/" style={{ padding: '5px' }}>
+                    <NavLink to="/" exact activeClassName="active">
                         Home
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/latest">Latest</Link>
+                    <NavLink to="/latest" exact activeClassName="active">
+                        Latest
+                    </NavLink>
                 </li>
             </ul>
         </nav>

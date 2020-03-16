@@ -1,57 +1,209 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useTable, usePagination } from 'react-table';
+import { useStore } from '../../context/provider';
+import getCellData from './cellItem';
 import CONST from '../../const';
-import postCall from '../../utils/post';
 
-const Currencies = ({ location = { state: {} }, match }) => {
-    const [currency, setCurrency] = useState({});
-    const { id, name } = location.state; // slug
+/**
+ * Prepare table
+ * @param {Array} columns
+ * @param {Array} data
+ * @param {Function} fetchData
+ * @param {Boolean} loading
+ * @param {Number} pageCount
+ */
+function Table({ columns, data, fetchData, pageCount: controlledPageCount }) {
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        page,
+        canPreviousPage,
+        canNextPage,
+        pageOptions,
+        pageCount,
+        gotoPage,
+        nextPage,
+        previousPage,
+        setPageSize,
+        // Get the state from the instance
+        state: { pageIndex, pageSize },
+    } = useTable(
+        {
+            columns,
+            data,
+            initialState: { pageIndex: 0 }, // Pass our hoisted table state
+            manualPagination: true, // Tell the usePagination
+            // hook that we'll handle our own data fetching
+            // This means we'll also have to provide our own
+            // pageCount.
+            pageCount: controlledPageCount,
+        },
+        usePagination
+    );
 
-    // console.log(location.state.id, match.params.name);
-    useEffect(() => {
-        const fetchData = async () => {
-            // const result = await axios(CONST.detail}, {
-            //     method: 'GET',
-            //     // url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info',
-            //     qs: {
-            //         id: `1, ${id}`,
-            //     },
-            //     headers: {
-            //         'X-CMC_PRO_API_KEY': 'e027cb66-32ce-40cd-8361-846402d8c3e5',
-            //     },
-            //     json: true,
-            //     gzip: true,
-            // });
-            const result = postCall({
-                url: CONST.localDetail,
-            });
-            setCurrency([result.data.data]);
-        };
-        fetchData();
-    }, [id]);
+    // Listen for changes in pagination and use the state to fetch our new data
+    React.useEffect(() => {
+        fetchData({ pageIndex, pageSize });
+    }, [fetchData, pageIndex, pageSize]);
 
-    const curr = currency[0] && currency[0][id];
-
+    // Render the UI for your table
     return (
-        <div>
-            <h1>item: {name}</h1>
-            {curr ? (
-                <table>
-                    <tbody>
-                        <tr key={`curr-${curr.id}`}>
-                            <td>
-                                <img src={curr.logo} alt={curr.name} />
-                            </td>
-                            <td>
-                                {curr.name} ({curr.symbol})
-                            </td>
-                            <td>{curr.description}</td>
+        <div className="table-container">
+            <table {...getTableProps()} className="table-root">
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps()}>
+                                    {column.render('Header')}
+                                </th>
+                            ))}
                         </tr>
-                    </tbody>
-                </table>
-            ) : (
-                '<p>Fetching data</p>'
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                    {page.map((row, i) => {
+                        prepareRow(row);
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => {
+                                    return (
+                                        <td {...cell.getCellProps()}>
+                                            {getCellData(
+                                                cell,
+                                                cell.row.original
+                                            )}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+
+            {getPagination(
+                canPreviousPage,
+                canNextPage,
+                pageOptions,
+                pageCount,
+                gotoPage,
+                nextPage,
+                previousPage,
+                setPageSize,
+                pageIndex,
+                pageSize
             )}
         </div>
     );
+}
+
+/**
+ * Render Pagination
+ * @function getPagination
+ */
+function getPagination(
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    pageIndex,
+    pageSize
+) {
+    return (
+        <div className="pagination">
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {'<<'}
+            </button>{' '}
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                {'<'}
+            </button>{' '}
+            <span>
+                Page{' '}
+                <strong>
+                    {pageIndex + 1} of {pageOptions.length}
+                </strong>{' '}
+            </span>
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+                {'>'}
+            </button>{' '}
+            <button
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}>
+                {'>>'}
+            </button>{' '}
+            <select
+                value={pageSize}
+                onChange={e => {
+                    setPageSize(Number(e.target.value));
+                }}>
+                {[10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                        Show {pageSize}
+                    </option>
+                ))}
+            </select>
+        </div>
+    );
+}
+
+/**
+ * Render Currencies in a table format
+ * @function Currencies
+ * @param {Object} props
+ */
+const Currencies = props => {
+    const [state] = useStore();
+    const { cryptoData } = state;
+
+    // Prepare table headers
+    // const columns = React.useMemo(() => CONST.tableColumns, []);
+
+    // We'll start our table without any data
+    const [data, setData] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+    const [pageCount, setPageCount] = React.useState(0);
+    const fetchIdRef = React.useRef(0);
+
+    const fetchData = React.useCallback(
+        ({ pageSize, pageIndex }) => {
+            // Give this fetch an ID
+            const fetchId = ++fetchIdRef.current;
+            // Set the loading state
+            setLoading(true);
+
+            // Only update the data if this is the latest fetch
+            if (fetchId === fetchIdRef.current) {
+                const startRow = pageSize * pageIndex;
+                const endRow = startRow + pageSize;
+                setData(cryptoData.data.slice(startRow, endRow));
+                // set page count
+                setPageCount(Math.ceil(cryptoData.data.length / pageSize));
+                // hide loader
+                setLoading(false);
+            }
+        },
+        [cryptoData.data]
+    );
+
+    /**
+     * @render
+     */
+    return (
+        <Table
+            columns={CONST.tableColumns}
+            data={data}
+            fetchData={fetchData}
+            loading={loading}
+            pageCount={pageCount}
+        />
+    );
 };
+
 export default Currencies;
