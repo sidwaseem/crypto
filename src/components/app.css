@@ -1,0 +1,184 @@
+.app {
+    text-align: left;
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.app-header {
+    background-color: #406ebc;
+    min-height: 60px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding: 30px;
+    color: white;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.app-header .logo h1 {
+    font-size: 24px;
+}
+
+.app-header .logo img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.banner {
+    min-height: 580px;
+    height: calc(100vh - 60px);
+}
+
+.banner img {
+    height: 580px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.navigation {
+    padding: 0 40px;
+}
+.navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.navigation li {
+    display: inline-block;
+}
+.navigation li a {
+    font-size: 1.2rem;
+    color: white;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0 20px;
+    line-height: 1.6;
+}
+.navigation li a.active {
+    text-decoration: underline;
+}
+.crypto-table {
+    width: 100%;
+    min-width: 400px;
+    border-collapse: collapse;
+}
+
+.crypto-table {
+    width: 100%;
+    min-width: 400px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.crypto-table li {
+    padding: 10px;
+    margin: 0;
+    box-shadow: rgb(51, 51, 51) 1px 0px 1px -1px inset,
+        rgb(51, 51, 51) -1px 0px 1px -1px inset,
+        rgb(225, 229, 234) 0px -1px 0px 0px,
+        rgb(225, 229, 234) 0px -1px 0px 0px inset;
+}
+
+.table-container {
+    width: 100%;
+}
+
+.table-root {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px;
+    font-size: 14px;
+    text-align: left;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
+    letter-spacing: 0.01071em;
+    vertical-align: inherit;
+    border-collapse: collapse;
+}
+
+.table-root th,
+.table-root td {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    padding: 16px;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
+    border-collapse: collapse;
+}
+
+.table-root th {
+    font-weight: bold;
+}
+
+.table-root a {
+    color: #1f60c5;
+    text-decoration: none;
+}
+.inc {
+    color: rgb(0, 158, 115);
+}
+.dec {
+    color: rgb(217, 64, 64);
+}
+/* pagination */
+.pagination {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px;
+    font-size: 14px;
+    text-align: left;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    vertical-align: inherit;
+    border-collapse: collapse;
+    text-align: center;
+}
+.pagination button {
+    padding: 10px;
+}
+
+/* Detail page */
+.currency-details {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px;
+    font-size: 14px;
+    text-align: left;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+.img-text {
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.crypto-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.crypto-links li {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 15px;
+}
+
+.crypto-links a {
+    font-size: 14px;
+    color: #1f60c5;
+    text-decoration: none;
+    text-transform: capitalize;
+}

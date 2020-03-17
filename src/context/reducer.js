@@ -1,20 +1,23 @@
-import rawData from '../data/mockData.json';
 import { actionTypes } from './actions';
+import CONST from '../const';
+import fetchData from '../utils/post';
 
 export const initialState = {
     appLoaded: false,
     cryptoData: [],
 };
 
-const cryptoUrl =
-    'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=d11eb0a4-dbf8-4c98-8b65-87af8a4031c9';
 /**
  * Fetch latest crypto stats data
  */
 export const getCryptoData = () => {
-    return fetch(cryptoUrl)
-        .then(r => r.json())
-        .then(({ data }) => data);
+    return fetchData({
+        url: CONST.url,
+    })
+        .then(res => {
+            return res.data.data;
+        })
+        .catch(err => console.log(err));
 };
 
 /**
@@ -22,7 +25,17 @@ export const getCryptoData = () => {
  * @function getCryptoDataLocally
  */
 export const getCryptoDataLocally = () => {
-    return new Promise(resolve => resolve(rawData));
+    /*
+        API FAQ: 
+        https://coinmarketcap.com/api/faq/
+
+        This CORS error means you are trying to make HTTP requests directly to the API from JavaScript
+        in the client - side of your application which is not supported.
+        This restriction is to protect API Key
+    */
+    return fetchData({
+        url: CONST.local,
+    });
 };
 
 /**
