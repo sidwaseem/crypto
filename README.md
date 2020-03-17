@@ -19,5 +19,5 @@ Launches the test runner in the interactive watch mode.<br />
 
 ### `npm run test:debug`
 
-Builds the app for production to the `build` folder.<br />
+Launches the test runner in the interactive watch mode with debugging support
 
