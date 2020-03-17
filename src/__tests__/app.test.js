@@ -7,8 +7,15 @@ import {
     reducer,
 } from '../utils/test-utils';
 import { appLoaded, fetchedData } from '../context/actions';
+import getData from '../utils/post';
 import App from '../components/app';
-import Home from '../components/home';
+// import Home from '../components/home';
+
+jest.mock('../utils/post');
+
+afterEach(() => {
+    getData.mockReset();
+});
 
 const mockData = {
     data: [
@@ -37,6 +44,9 @@ const mockData = {
 };
 
 describe('Suite:: <App /> component', () => {
+    // https://github.com/threepointone/react-act-examples/blob/master/sync.md
+    getData.mockResolvedValue(mockData);
+
     it('Should render `Loader` initially', () => {
         const { getByText } = render(<App />);
         expect(getByText(/Loading app/)).toBeInTheDocument();
@@ -44,22 +54,31 @@ describe('Suite:: <App /> component', () => {
 
     it('Should render `App` if data is fetched', () => {
         let state;
-        const newState = {
-            ...initialState,
-            cryptoData: mockData,
-        };
-        const { result } = renderHook(() => useReducer(reducer, newState));
-
-        let [, dispatch] = result.current;
+        // const newState = {
+        //     ...initialState,
+        // };
 
         act(() => {
-            dispatch(fetchedData(mockData));
+            const { result } = renderHook(() => useReducer(reducer, {}));
+            let [, dispatch] = result.current;
+            const { container } = render(<App />, {
+                route: '/',
+            });
+            dispatch(fetchedData());
             dispatch(appLoaded());
         });
 
-        [state, dispatch] = result.current;
+        // [state, dispatch] = result.current;
 
         expect(state.appLoaded).toBeTruthy();
-        expect(state.cryptoData.data).not.toBeNull();
+        expect(state.cryptoData).not.toBeNull();
+
+        expect(container.innerHTML).toMatch('No match');
+
+        // expect(container.querySelector('.app-header')).toHaveLength(1);
+
+        // fireEvent.click(getByText('Change Text'));
+
+        // expect(getByText(/Some/i).textContent).toBe('Some Other Text');
     });
 });

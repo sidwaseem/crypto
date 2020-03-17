@@ -156,7 +156,7 @@ function getPagination(
  * @param {Object} props
  */
 const Currencies = props => {
-    const [state] = useStore();
+    const state = useStore();
     const { cryptoData } = state;
 
     // We'll start our table without any data
@@ -177,14 +177,14 @@ const Currencies = props => {
             if (fetchId === fetchIdRef.current) {
                 const startRow = pageSize * pageIndex;
                 const endRow = startRow + pageSize;
-                setData(cryptoData.data.slice(startRow, endRow));
+                setData(cryptoData.slice(startRow, endRow));
                 // set page count
-                setPageCount(Math.ceil(cryptoData.data.length / pageSize));
+                setPageCount(Math.ceil(cryptoData.length / pageSize));
                 // hide loader
                 setLoading(false);
             }
         },
-        [cryptoData.data]
+        [cryptoData]
     );
 
     /**

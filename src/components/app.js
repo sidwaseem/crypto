@@ -7,10 +7,10 @@ import './app.css';
  * Render markup
  * @returns {HTMLObject|JSX}
  */
-const App = () => {
+const App = props => {
     return (
-        <AppState>
-            <Routes />
+        <AppState {...props}>
+            <Routes {...props} />
         </AppState>
     );
 };

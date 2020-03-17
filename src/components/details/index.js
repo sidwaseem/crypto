@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import fetchData from '../../utils/post';
+import { useHistory, useLocation } from 'react-router';
+import getData from '../../utils/post';
 import CONST from '../../const';
 
 /**
@@ -7,9 +8,11 @@ import CONST from '../../const';
  * @function Details
  * @param {*} param0
  */
-const Details = ({ location = { state: {} }, match }) => {
+const Details = () => {
     const [currency, setCurrency] = useState(null);
-    const { id, name } = location.state;
+    const location = useLocation();
+    const history = useHistory();
+    const { state: { id, name } = {} } = location;
 
     useEffect(() => {
         const getDetails = () => {
@@ -21,18 +24,23 @@ const Details = ({ location = { state: {} }, match }) => {
                 in the client - side of your application which is not supported.
                 This restriction is to protect API Key
             */
-            const result = fetchData({
+            const result = getData({
                 url: `${CONST.localDetail}?q=${id}`,
             });
-            result.then(res => setCurrency(res.data.data[id] || null));
+            result.then(res => setCurrency(res.data[id] || null));
         };
         getDetails();
     }, [id]);
+
+    function goBackHandler() {
+        history.goBack();
+    }
 
     return (
         <div className="currency-details">
             {currency ? (
                 <Fragment>
+                    <button onClick={goBackHandler}>Go back</button>
                     <div className="table-root">
                         <h2>
                             <img

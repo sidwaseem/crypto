@@ -14,7 +14,13 @@ function render(ui, { store = {}, ...options } = {}) {
         const [state, dispatch] = useReducer(reducer, appState);
         return (
             <MemoryRouter initialEntries={['/']}>
-                <StoreContext.Provider value={[state, dispatch]} {...props}>
+                <StoreContext.Provider
+                    value={{
+                        appLoaded: state.appLoaded,
+                        cryptoData: state.cryptoData,
+                        dispatch,
+                    }}
+                    {...props}>
                     {props.children}
                 </StoreContext.Provider>
             </MemoryRouter>

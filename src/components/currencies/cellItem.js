@@ -27,11 +27,13 @@ function getCellData(cell, currency) {
                     to={{
                         pathname: `/latest/${currency.slug}`,
                         state: {
+                            from: '/latest',
                             slug: currency.slug,
                             id: currency.id,
                             name: cell.value,
                         },
-                    }}>
+                    }}
+                >
                     {cell.value}
                 </Link>
             );
@@ -41,7 +43,8 @@ function getCellData(cell, currency) {
                 <span
                     className={
                         cell.value.toString().indexOf('-') ? 'inc' : 'dec'
-                    }>
+                    }
+                >
                     {cell.value}
                 </span>
             );
