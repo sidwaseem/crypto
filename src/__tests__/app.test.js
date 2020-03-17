@@ -6,9 +6,35 @@ import {
     initialState,
     reducer,
 } from '../utils/test-utils';
-import { appLoaded } from '../context/actions';
+import { appLoaded, fetchedData } from '../context/actions';
 import App from '../components/app';
 import Home from '../components/home';
+
+const mockData = {
+    data: [
+        {
+            id: 1,
+            name: 'Bitcoin',
+            symbol: 'BTC',
+            slug: 'bitcoin',
+            max_supply: 21000000,
+            circulating_supply: 18268962,
+            total_supply: 18268962,
+            cmc_rank: 1,
+            quote: {
+                USD: {
+                    price: 5417.56246824,
+                    volume_24h: 76714328413.1832,
+                    percent_change_1h: 5.96575,
+                    percent_change_24h: -8.4708,
+                    percent_change_7d: -40.4818,
+                    market_cap: 98973242864.90277,
+                    last_updated: '2020-03-13T20:19:43.000Z',
+                },
+            },
+        },
+    ],
+};
 
 describe('Suite:: <App /> component', () => {
     it('Should render `Loader` initially', () => {
@@ -20,46 +46,20 @@ describe('Suite:: <App /> component', () => {
         let state;
         const newState = {
             ...initialState,
-            cryptoData: {
-                data: [
-                    {
-                        id: 1,
-                        name: 'Bitcoin',
-                        symbol: 'BTC',
-                        slug: 'bitcoin',
-                        num_market_pairs: 7806,
-                        date_added: '2013-04-28T00:00:00.000Z',
-                        tags: ['mineable'],
-                        max_supply: 21000000,
-                        circulating_supply: 18268962,
-                        total_supply: 18268962,
-                        platform: null,
-                        cmc_rank: 1,
-                        last_updated: '2020-03-13T20:19:43.000Z',
-                        quote: {
-                            USD: {
-                                price: 5417.56246824,
-                                volume_24h: 76714328413.1832,
-                                percent_change_1h: 5.96575,
-                                percent_change_24h: -8.4708,
-                                percent_change_7d: -40.4818,
-                                market_cap: 98973242864.90277,
-                                last_updated: '2020-03-13T20:19:43.000Z',
-                            },
-                        },
-                    },
-                ],
-            },
+            cryptoData: mockData,
         };
         const { result } = renderHook(() => useReducer(reducer, newState));
 
         let [, dispatch] = result.current;
 
         act(() => {
+            dispatch(fetchedData(mockData));
             dispatch(appLoaded());
         });
 
         [state, dispatch] = result.current;
+
         expect(state.appLoaded).toBeTruthy();
+        expect(state.cryptoData.data).not.toBeNull();
     });
 });

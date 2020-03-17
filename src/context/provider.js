@@ -11,5 +11,4 @@ function useStore() {
     return store;
 }
 
-// const { Provider } = StoreContext;
 export { StoreContext, useStore };

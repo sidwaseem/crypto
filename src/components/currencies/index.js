@@ -6,11 +6,11 @@ import CONST from '../../const';
 
 /**
  * Prepare table
- * @param {Array} columns
- * @param {Array} data
- * @param {Function} fetchData
- * @param {Boolean} loading
- * @param {Number} pageCount
+ * @param {Array} columns columns mapping
+ * @param {Array} data data to be render into table
+ * @param {Function} fetchData populate next page
+ * @param {Boolean} loading indicator
+ * @param {Number} pageCount page counter
  */
 function Table({ columns, data, fetchData, pageCount: controlledPageCount }) {
     const {
@@ -33,11 +33,8 @@ function Table({ columns, data, fetchData, pageCount: controlledPageCount }) {
         {
             columns,
             data,
-            initialState: { pageIndex: 0 }, // Pass our hoisted table state
-            manualPagination: true, // Tell the usePagination
-            // hook that we'll handle our own data fetching
-            // This means we'll also have to provide our own
-            // pageCount.
+            initialState: { pageIndex: 0 },
+            manualPagination: true,
             pageCount: controlledPageCount,
         },
         usePagination
@@ -162,15 +159,13 @@ const Currencies = props => {
     const [state] = useStore();
     const { cryptoData } = state;
 
-    // Prepare table headers
-    // const columns = React.useMemo(() => CONST.tableColumns, []);
-
     // We'll start our table without any data
     const [data, setData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [pageCount, setPageCount] = React.useState(0);
     const fetchIdRef = React.useRef(0);
 
+    // borrowed from React-table example
     const fetchData = React.useCallback(
         ({ pageSize, pageIndex }) => {
             // Give this fetch an ID
